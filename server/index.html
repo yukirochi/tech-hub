@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove BG & Download</title>
+    <style>
+        /* Simple styling to make it look clean */
+        body { font-family: sans-serif; padding: 20px; }
+        .hidden { display: none; }
+        .preview-box { margin-top: 20px; }
+        img { max-width: 300px; border: 1px solid #ccc; display: block; margin-bottom: 10px; }
+        
+        /* Green Download Button Style */
+        .btn-download {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Remove Background & Download</h2>
+
+    <form id="uploadForm">
+        <input type="file" id="fileInput" accept="image/*">
+        <button type="button" onclick="handleUpload()">Upload to Python</button>
+    </form>
+
+    <p id="statusText" style="color: gray;">Waiting for file...</p>
+
+    <div id="resultContainer" class="hidden preview-box">
+        <h3>Result:</h3>
+        
+        <img id="resultImage" src="" alt="Processed Image">
+        
+        <a id="downloadLink" class="btn-download" download="no-bg-result.png">
+            Download Image
+        </a>
+    </div>
+
+    <script>
+        async function handleUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const statusText = document.getElementById('statusText');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultImage = document.getElementById('resultImage');
+            const downloadLink = document.getElementById('downloadLink');
+
+            // 1. Basic Validation
+            if (!fileInput.files[0]) {
+                alert("Please select a file first!");
+                return;
+            }
+
+            // 2. Prepare Data
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                // UI Updates: Show loading, hide previous results
+                statusText.innerText = "Processing... please wait.";
+                resultContainer.classList.add("hidden");
+
+                // 3. Send Request to FastAPI
+                const response = await fetch('http://127.0.0.1:8000/upload_image/', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error("Server Error");
+
+                // 4. Handle Response (Blob)
+                const imageBlob = await response.blob();
+                
+                // Create a magical URL that points to the data in memory
+                const imageObjectURL = URL.createObjectURL(imageBlob);
+
+                // 5. Update the UI
+                // A. Set the image source so we can see it
+                resultImage.src = imageObjectURL;
+                
+                // B. Set the download link href to the same URL
+                downloadLink.href = imageObjectURL;
+                
+                // C. (Optional) Use the original filename to name the download
+                // e.g., if uploaded "cat.jpg", download becomes "cat-processed.png"
+                const originalName = fileInput.files[0].name.split('.')[0];
+                downloadLink.download = `${originalName}-processed.png`;
+
+                // D. Show everything
+                resultContainer.classList.remove("hidden");
+                statusText.innerText = "Done!";
+
+            } catch (error) {
+                console.error(error);
+                statusText.innerText = "Error processing image.";
+            }
+        }
+    </script>
+
+</body>
+</html>
