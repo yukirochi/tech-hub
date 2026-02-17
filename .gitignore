@@ -1,3 +1,4 @@
 server/venv
 server/__pycache__
 server/remove_bg
+server/.venv

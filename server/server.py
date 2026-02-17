@@ -1,9 +1,16 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer
+from pydantic import BaseModel  
 import requests
 import shutil
 import os
+
+import nltk
+nltk.download('punkt_tab')
 
 app = FastAPI()
 
@@ -48,3 +55,21 @@ async def removebg(file: UploadFile = File(...)):
             out.write(response.content)
     
     return FileResponse(finished_product_loc, media_type='image/png')
+
+class text_sum(BaseModel):
+    content:str
+
+@app.post('/summarize')
+def summarize(text: text_sum):
+    parser = PlaintextParser.from_string(text.content, Tokenizer("english"))
+    
+    summarizer = LsaSummarizer()
+    
+    summary = summarizer(parser.document, sentences_count = 2)
+    
+    result = ""
+    
+    for sums in summary:
+        result += str(sums)
+    
+    return result    
