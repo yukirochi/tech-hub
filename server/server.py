@@ -5,12 +5,19 @@ from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 from pydantic import BaseModel  
+import nlpaug.augmenter.word as naw
 import requests
 import shutil
 import os
-
+import language_tool_python
 import nltk
 nltk.download('punkt_tab')
+# Download the specific tagger mentioned in your error
+nltk.download('averaged_perceptron_tagger_eng')
+
+# Since you are using SynonymAug with WordNet, you'll likely need these too
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 app = FastAPI()
 
@@ -73,3 +80,23 @@ def summarize(text: text_sum):
         result += str(sums)
     
     return result    
+
+@app.post('/paraphrase')
+def paraphrase(text: text_sum):
+    
+    aug = naw.SynonymAug(aug_src='wordnet')
+    
+    result = aug.augment(text.content)
+    
+    return result
+
+@app.post('/grammar_check')
+def grammar_check(text: text_sum):
+    
+    tool = language_tool_python.LanguageTool('en-US')
+    
+    matches = tool.check(text.content)
+    
+    result = tool.correct(text.content)
+    
+    return result
