@@ -13,7 +13,9 @@ import language_tool_python
 import redis
 import hashlib
 import nltk
-from routes import remove_bg, summarizer, paraphrase, grammar_fix
+from routes import remove_bg, summarizer, paraphrase, grammar_fix, image_to_text
+
+
 
 nltk.download('punkt_tab')
 nltk.download('averaged_perceptron_tagger_eng')
@@ -29,7 +31,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Allow all origins for development; restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -39,3 +41,4 @@ app.include_router(remove_bg.router)
 app.include_router(summarizer.router)
 app.include_router(paraphrase.router)
 app.include_router(grammar_fix.router)
+app.include_router(image_to_text.router)
