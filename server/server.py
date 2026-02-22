@@ -13,7 +13,8 @@ import language_tool_python
 import redis
 import hashlib
 import nltk
-from routes import remove_bg, summarizer, paraphrase, grammar_fix, image_to_text
+from routes import remove_bg, summarizer, paraphrase, grammar_fix, image_to_text, qr_generator
+
 
 
 
@@ -42,3 +43,4 @@ app.include_router(summarizer.router)
 app.include_router(paraphrase.router)
 app.include_router(grammar_fix.router)
 app.include_router(image_to_text.router)
+app.include_router(qr_generator.router)

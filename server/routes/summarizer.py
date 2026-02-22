@@ -16,6 +16,7 @@ def summarize(text: text_sum):
     
     
     check_cached = get_cached_text(text.content, text.content)
+    
     if check_cached:
         return check_cached
     

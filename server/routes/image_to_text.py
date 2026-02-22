@@ -1,5 +1,4 @@
-from fastapi import FastAPI, APIRouter, UploadFile, File
-from pydantic import BaseModel
+from fastapi import APIRouter, UploadFile, File
 from PIL import Image
 import pytesseract
 import io
@@ -18,11 +17,15 @@ async def root(file: UploadFile = File(...)):
     hash_key = hashlib.sha256(request_object_content).hexdigest()
     
     get_cached = get_cached_image(hash_key)
+    
     if get_cached:
         return {"text": get_cached}
     
     img = Image.open(io.BytesIO(request_object_content))
+    
     result = pytesseract.image_to_string(img)
+    
     set_cached_image(hash_key, result)
+    
     return {"text": result}
    
