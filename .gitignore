@@ -1,0 +1,8 @@
+server/venv
+server/__pycache__
+server/remove_bg
+server/.venv
+server/.vscode
+server/.idea
+server/.pytest_cache
+serve/routes/__pycache__
