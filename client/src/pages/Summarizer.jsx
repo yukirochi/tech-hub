@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
-import { postJSON } from '../utils/api';
+import { postJSON, getConnectionStatus } from '../utils/api';
 
 function Summarizer({ onBack }) {
   const [text, setText] = useState('');
@@ -14,6 +14,12 @@ function Summarizer({ onBack }) {
       return;
     }
 
+    const connectionStatus = getConnectionStatus();
+    if (connectionStatus !== 'connected') {
+      setError('Backend server is not connected. Please make sure the backend is running on port 8000.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -22,7 +28,7 @@ function Summarizer({ onBack }) {
       const data = await response.json();
       setResult(data);
     } catch (err) {
-      setError(err.message || 'Failed to summarize text');
+      setError(err.message || 'Failed to summarize text. Make sure the backend server is running.');
     } finally {
       setLoading(false);
     }

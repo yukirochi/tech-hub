@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaArrowLeft, FaQrcode, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
-import { postJSON } from '../utils/api';
+import { postJSON, getConnectionStatus } from '../utils/api';
 
 function QrGenerator({ onBack }) {
   const [text, setText] = useState('');
@@ -14,6 +14,12 @@ function QrGenerator({ onBack }) {
       return;
     }
 
+    const connectionStatus = getConnectionStatus();
+    if (connectionStatus !== 'connected') {
+      setError('Backend server is not connected. Please make sure the backend is running on port 8000.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -23,7 +29,7 @@ function QrGenerator({ onBack }) {
       const url = URL.createObjectURL(blob);
       setResult(url);
     } catch (err) {
-      setError(err.message || 'Failed to generate QR code');
+      setError(err.message || 'Failed to generate QR code. Make sure the backend server is running.');
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaArrowLeft, FaCheckCircle, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
-import { postJSON } from '../utils/api';
+import { postJSON, getConnectionStatus } from '../utils/api';
 
 function GrammarFix({ onBack }) {
   const [text, setText] = useState('');
@@ -14,6 +14,12 @@ function GrammarFix({ onBack }) {
       return;
     }
 
+    const connectionStatus = getConnectionStatus();
+    if (connectionStatus !== 'connected') {
+      setError('Backend server is not connected. Please make sure the backend is running on port 8000.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -22,7 +28,7 @@ function GrammarFix({ onBack }) {
       const data = await response.json();
       setResult(data);
     } catch (err) {
-      setError(err.message || 'Failed to fix grammar');
+      setError(err.message || 'Failed to fix grammar. Make sure the backend server is running.');
     } finally {
       setLoading(false);
     }

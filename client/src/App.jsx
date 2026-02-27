@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaHome, FaImage, FaFileAlt, FaPen, FaCheckCircle, FaQrcode } from 'react-icons/fa';
 import './App.css';
+import ConnectionStatus from './components/ConnectionStatus';
 import Home from './pages/Home';
 import RemoveBg from './pages/RemoveBg';
 import ImageToText from './pages/ImageToText';
@@ -95,6 +96,7 @@ function App() {
             </button>
           </li>
         </ul>
+        <ConnectionStatus />
       </nav>
       <div className="container">
         {renderPage()}

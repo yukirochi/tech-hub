@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaArrowLeft, FaImage, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
-import { postFormData } from '../utils/api';
+import { postFormData, getConnectionStatus } from '../utils/api';
 
 function RemoveBg({ onBack }) {
   const [file, setFile] = useState(null);
@@ -22,6 +22,12 @@ function RemoveBg({ onBack }) {
       return;
     }
 
+    const connectionStatus = getConnectionStatus();
+    if (connectionStatus !== 'connected') {
+      setError('Backend server is not connected. Please make sure the backend is running on port 8000.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -34,7 +40,7 @@ function RemoveBg({ onBack }) {
       const url = URL.createObjectURL(blob);
       setResult(url);
     } catch (err) {
-      setError(err.message || 'Failed to remove background');
+      setError(err.message || 'Failed to remove background. Make sure the backend server is running.');
     } finally {
       setLoading(false);
     }

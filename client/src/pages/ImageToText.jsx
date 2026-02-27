@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
-import { postFormData } from '../utils/api';
+import { postFormData, getConnectionStatus } from '../utils/api';
 
 function ImageToText({ onBack }) {
   const [file, setFile] = useState(null);
@@ -22,6 +22,12 @@ function ImageToText({ onBack }) {
       return;
     }
 
+    const connectionStatus = getConnectionStatus();
+    if (connectionStatus !== 'connected') {
+      setError('Backend server is not connected. Please make sure the backend is running on port 8000.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -33,7 +39,7 @@ function ImageToText({ onBack }) {
       const data = await response.json();
       setResult(data.text);
     } catch (err) {
-      setError(err.message || 'Failed to extract text');
+      setError(err.message || 'Failed to extract text. Make sure the backend server is running.');
     } finally {
       setLoading(false);
     }
