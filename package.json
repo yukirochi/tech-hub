@@ -1,0 +1,16 @@
+{
+  "name": "techhub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "npm run dev --prefix client",
+    "server": "cd server && .venv/bin/python -m uvicorn server:app --reload",
+    "dev": "concurrently -n \"FRONTEND,SERVER\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run frontend\" \"npm run server\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
