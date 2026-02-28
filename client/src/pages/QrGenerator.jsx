@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaArrowLeft, FaQrcode, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
+import { FaArrowLeft, FaQrcode, FaCheck, FaExclamationCircle, FaSpinner, FaDownload } from 'react-icons/fa';
 import { postJSON, getConnectionStatus } from '../utils/api';
 
 function QrGenerator({ onBack }) {
@@ -33,6 +33,15 @@ function QrGenerator({ onBack }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = result;
+    link.download = `qrcode-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleReset = () => {
@@ -81,9 +90,14 @@ function QrGenerator({ onBack }) {
             )}
           </button>
           {result && (
-            <button className="btn btn-secondary" onClick={handleReset}>
-              Reset
-            </button>
+            <>
+              <button className="btn btn-success" onClick={handleDownload}>
+                <FaDownload /> Download
+              </button>
+              <button className="btn btn-secondary" onClick={handleReset}>
+                Reset
+              </button>
+            </>
           )}
         </div>
 

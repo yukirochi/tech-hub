@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
+import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner, FaCopy, FaDownload } from 'react-icons/fa';
 import { postFormData, getConnectionStatus } from '../utils/api';
 
 function ImageToText({ onBack }) {
@@ -7,6 +7,7 @@ function ImageToText({ onBack }) {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -45,10 +46,29 @@ function ImageToText({ onBack }) {
     }
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([result], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `extracted-text-${Date.now()}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handleReset = () => {
     setFile(null);
     setResult('');
     setError('');
+    setCopied(false);
   };
 
   return (
@@ -62,7 +82,7 @@ function ImageToText({ onBack }) {
         <h2>
           <FaFileAlt /> Image to Text
         </h2>
-        <p className="feature-subtitle">Extract text from images using advanced OCR technology</p>
+        <p className="feature-subtitle">Extract text from images using OCR technology</p>
         
         <div className="input-group">
           <label>Upload Image</label>
@@ -97,9 +117,17 @@ function ImageToText({ onBack }) {
             )}
           </button>
           {result && (
-            <button className="btn btn-secondary" onClick={handleReset}>
-              Reset
-            </button>
+            <>
+              <button className="btn btn-success" onClick={handleCopy}>
+                {copied ? <><FaCheck /> Copied!</> : <><FaCopy /> Copy</>}
+              </button>
+              <button className="btn btn-success" onClick={handleDownload}>
+                <FaDownload /> Download
+              </button>
+              <button className="btn btn-secondary" onClick={handleReset}>
+                Reset
+              </button>
+            </>
           )}
         </div>
 

@@ -28,12 +28,16 @@ psutil==7.2.2
 pycountry==26.2.16
 pydantic==2.12.5
 pydantic_core==2.41.5
+PyPDF2==3.0.1
 PySocks==1.7.1
 pytesseract==0.3.13
 python-dateutil==2.9.0.post0
+python-docx==1.1.2
 python-multipart==0.0.22
+qrcode[pil]==8.2
 redis==7.2.0
 regex==2026.1.15
+reportlab==4.2.5
 requests==2.32.5
 setuptools==82.0.0
 six==1.17.0

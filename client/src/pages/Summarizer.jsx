@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
+import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner, FaCopy, FaDownload } from 'react-icons/fa';
 import { postJSON, getConnectionStatus } from '../utils/api';
 
 function Summarizer({ onBack }) {
@@ -7,6 +7,7 @@ function Summarizer({ onBack }) {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async () => {
     if (!text.trim()) {
@@ -26,7 +27,7 @@ function Summarizer({ onBack }) {
     try {
       const response = await postJSON('/summarizer', { content: text });
       const data = await response.json();
-      setResult(data);
+      setResult(data.summary || data.error || 'No summary generated');
     } catch (err) {
       setError(err.message || 'Failed to summarize text. Make sure the backend server is running.');
     } finally {
@@ -34,10 +35,29 @@ function Summarizer({ onBack }) {
     }
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([result], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `summary-${Date.now()}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handleReset = () => {
     setText('');
     setResult('');
     setError('');
+    setCopied(false);
   };
 
   return (
@@ -79,9 +99,17 @@ function Summarizer({ onBack }) {
             )}
           </button>
           {result && (
-            <button className="btn btn-secondary" onClick={handleReset}>
-              Reset
-            </button>
+            <>
+              <button className="btn btn-success" onClick={handleCopy}>
+                {copied ? <><FaCheck /> Copied!</> : <><FaCopy /> Copy</>}
+              </button>
+              <button className="btn btn-success" onClick={handleDownload}>
+                <FaDownload /> Download
+              </button>
+              <button className="btn btn-secondary" onClick={handleReset}>
+                Reset
+              </button>
+            </>
           )}
         </div>
 

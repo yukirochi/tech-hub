@@ -22,7 +22,7 @@ export const checkConnection = async () => {
   try {
     const response = await fetch(`${API_URL}/health`, {
       method: 'GET',
-      timeout: 5000
+      mode: 'cors',
     });
     
     if (response.ok) {
@@ -33,6 +33,7 @@ export const checkConnection = async () => {
       return false;
     }
   } catch (error) {
+    console.error('Connection check failed:', error);
     updateConnectionStatus('disconnected');
     return false;
   }
@@ -42,6 +43,7 @@ export const apiCall = async (endpoint, options = {}) => {
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
+      mode: 'cors',
       headers: {
         ...options.headers,
       }
@@ -55,6 +57,7 @@ export const apiCall = async (endpoint, options = {}) => {
     updateConnectionStatus('connected');
     return response;
   } catch (error) {
+    console.error('API call failed:', error);
     updateConnectionStatus('disconnected');
     throw error;
   }

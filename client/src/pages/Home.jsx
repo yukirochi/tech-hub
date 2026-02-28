@@ -1,19 +1,7 @@
-import { FaImage, FaFileAlt, FaPen, FaCheckCircle, FaQrcode, FaArrowRight } from 'react-icons/fa';
+import { FaImage, FaFileAlt, FaPen, FaCheckCircle, FaQrcode, FaArrowRight, FaFilePdf, FaSearch, FaListOl } from 'react-icons/fa';
 
 function Home({ onSelectFeature }) {
   const features = [
-    {
-      id: 'remove-bg',
-      icon: FaImage,
-      title: 'Remove Background',
-      description: 'Remove background from images instantly with AI-powered technology'
-    },
-    {
-      id: 'image-to-text',
-      icon: FaFileAlt,
-      title: 'Image to Text',
-      description: 'Extract text from images using advanced OCR technology'
-    },
     {
       id: 'summarizer',
       icon: FaFileAlt,
@@ -33,10 +21,40 @@ function Home({ onSelectFeature }) {
       description: 'Fix grammar and spelling errors in your text instantly'
     },
     {
+      id: 'plagiarism-checker',
+      icon: FaSearch,
+      title: 'Plagiarism Checker',
+      description: 'Check your text for originality and get uniqueness score'
+    },
+    {
+      id: 'essay-outline',
+      icon: FaListOl,
+      title: 'Essay Outline',
+      description: 'Generate structured outlines for different essay types'
+    },
+    {
+      id: 'image-to-text',
+      icon: FaFileAlt,
+      title: 'Image to Text',
+      description: 'Extract text from images using OCR technology'
+    },
+    {
+      id: 'pdf-converter',
+      icon: FaFilePdf,
+      title: 'PDF Converter',
+      description: 'Convert between PDF and Word documents seamlessly'
+    },
+    {
       id: 'qr-generator',
       icon: FaQrcode,
       title: 'QR Code Generator',
       description: 'Generate QR codes from text or URLs for easy sharing'
+    },
+    {
+      id: 'remove-bg',
+      icon: FaImage,
+      title: 'Remove Background',
+      description: 'Remove background from images instantly with AI technology'
     }
   ];
 

@@ -3,7 +3,9 @@ from pydantic import BaseModel
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
-from cache.cached_text import get_cached_text
+import hashlib
+from cache.cached_text import get_cached_text, set_cached_text
+
 router = APIRouter(
     tags=["general"],
 )
@@ -13,22 +15,30 @@ class text_sum(BaseModel):
 
 @router.post('/summarizer')
 def summarize(text: text_sum):
-    
-    
-    check_cached = get_cached_text(text.content, text.content)
-    
-    if check_cached:
-        return check_cached
-    
-    parser = PlaintextParser.from_string(text.content, Tokenizer("english"))
-    
-    summarizer = LsaSummarizer()
-    
-    summary = summarizer(parser.document, sentences_count = 2)
-    
-    result = ""
-    
-    for sums in summary:
-        result += str(sums)
-    
-    return result    
+    try:
+        # Create hash key from content
+        hash_key = hashlib.sha256(text.content.encode()).hexdigest()
+        
+        # Check cache
+        check_cached = get_cached_text(hash_key)
+        
+        if check_cached:
+            return {"summary": check_cached}
+        
+        parser = PlaintextParser.from_string(text.content, Tokenizer("english"))
+        
+        summarizer = LsaSummarizer()
+        
+        summary = summarizer(parser.document, sentences_count = 2)
+        
+        result = ""
+        
+        for sums in summary:
+            result += str(sums)
+        
+        # Cache the result
+        set_cached_text(hash_key, result)
+        
+        return {"summary": result}
+    except Exception as e:
+        return {"error": str(e), "summary": ""}    

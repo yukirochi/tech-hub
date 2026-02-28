@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaArrowLeft, FaImage, FaCheck, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
+import { FaArrowLeft, FaImage, FaCheck, FaExclamationCircle, FaSpinner, FaDownload } from 'react-icons/fa';
 import { postFormData, getConnectionStatus } from '../utils/api';
 
 function RemoveBg({ onBack }) {
@@ -43,6 +43,17 @@ function RemoveBg({ onBack }) {
       setError(err.message || 'Failed to remove background. Make sure the backend server is running.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownload = () => {
+    if (result) {
+      const link = document.createElement('a');
+      link.href = result;
+      link.download = `removed-bg-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
@@ -98,9 +109,14 @@ function RemoveBg({ onBack }) {
             )}
           </button>
           {result && (
-            <button className="btn btn-secondary" onClick={handleReset}>
-              Reset
-            </button>
+            <>
+              <button className="btn btn-success" onClick={handleDownload}>
+                <FaDownload /> Download
+              </button>
+              <button className="btn btn-secondary" onClick={handleReset}>
+                Reset
+              </button>
+            </>
           )}
         </div>
 

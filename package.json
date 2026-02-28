@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "frontend": "npm run dev --prefix client",
-    "server": "cd server && .venv/bin/python -m uvicorn server:app --reload",
+    "server": "node start-server.js",
     "dev": "concurrently -n \"FRONTEND,SERVER\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run frontend\" \"npm run server\""
   },
   "author": "",
