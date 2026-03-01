@@ -5,6 +5,7 @@ from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 from pydantic import BaseModel  
+import pandas as pd
 import nlpaug.augmenter.word as naw
 import requests
 import shutil
@@ -12,6 +13,8 @@ import os
 import language_tool_python
 import hashlib
 import nltk
+import sqlite3
+import pandas as pd
 from routes import remove_bg, summarizer, paraphrase, grammar_fix, image_to_text, qr_generator, pdf_converter, plagiarism_check, essay_outline, feedback
 
 nltk.download('punkt_tab')
@@ -43,4 +46,5 @@ app.include_router(feedback.router)
 
 @app.get("/health")
 async def health_check():
+    
     return {"status": "ok", "message": "Backend server is running"}
