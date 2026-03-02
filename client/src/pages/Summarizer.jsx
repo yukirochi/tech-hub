@@ -103,9 +103,6 @@ function Summarizer({ onBack }) {
               <button className="btn btn-success" onClick={handleCopy}>
                 {copied ? <><FaCheck /> Copied!</> : <><FaCopy /> Copy</>}
               </button>
-              <button className="btn btn-success" onClick={handleDownload}>
-                <FaDownload /> Download
-              </button>
               <button className="btn btn-secondary" onClick={handleReset}>
                 Reset
               </button>

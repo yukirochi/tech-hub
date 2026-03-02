@@ -6,7 +6,7 @@ function AboutUs({ onBack }) {
     {
       name: 'Justine Abanilla',
       role: 'Computer Engineering Student',
-      image: 'https://via.placeholder.com/200/16a34a/ffffff?text=JD',
+      image: 'https://plus.unsplash.com/premium_photo-1681486555488-3ef3f7ff9606?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       quote: 'Innovation distinguishes between a leader and a follower.',
       email: 'john.doe@techhub.com',
       github: 'https://github.com',
@@ -17,13 +17,24 @@ function AboutUs({ onBack }) {
     {
       name: 'John Lawrence J. Cano',
       role: 'Computer Engineering Student',
-      image: 'https://via.placeholder.com/200/22c55e/ffffff?text=JS',
-      quote: 'The best way to predict the future is to create it.',
+      image: 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/2800/James-Carter.Rush-Hour.webp',
+      quote: 'Innovation distinguishes between a leader and a follower.',  
       email: 'johnlawrencecano@gmail.com',
       github: 'https://github.com',
       linkedin: 'https://linkedin.com',
       twitter: 'https://twitter.com',
       bio: 'Expert mag mahal always.'
+    },
+    {
+      name: 'Mark allen D Banatao',
+      role: 'Computer Engineering Student',
+      image: 'https://plus.unsplash.com/premium_photo-1689551670902-19b441a6afde?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      quote: 'Ang hindi mag mahal sa sariling wika ay isang stupid motherfucker',
+      email: 'banatao123@gmail.com',
+      github: 'https://github.com',
+      linkedin: 'https://linkedin.com',
+      twitter: 'https://twitter.com',
+      bio: 'if there a hole there is a way'
     }
   ];
 

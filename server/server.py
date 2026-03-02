@@ -45,6 +45,5 @@ app.include_router(essay_outline.router)
 app.include_router(feedback.router)
 
 @app.get("/health")
-async def health_check():
-    
+async def health_check():  
     return {"status": "ok", "message": "Backend server is running"}
