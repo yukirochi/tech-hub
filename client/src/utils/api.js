@@ -50,6 +50,27 @@ export const apiCall = async (endpoint, options = {}) => {
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        // Handle Rate Limit Exceeded
+        const retryAfter = response.headers.get('retry-after');
+        let errorMsg = 'Too many requests. Please wait.';
+        try {
+          const body = await response.json();
+          if (body.error) errorMsg = body.error;
+        } catch (e) {
+          // ignore parsing error if body is empty
+        }
+        
+        const error = new Error(errorMsg);
+        error.status = 429;
+        if (retryAfter) {
+          error.retryAfterSecs = parseInt(retryAfter, 10);
+        } else {
+          error.retryAfterSecs = 60; // default to 60s if no header
+        }
+        throw error;
+      }
+
       updateConnectionStatus('disconnected');
       throw new Error(`API Error: ${response.status}`);
     }
@@ -58,7 +79,9 @@ export const apiCall = async (endpoint, options = {}) => {
     return response;
   } catch (error) {
     console.error('API call failed:', error);
-    updateConnectionStatus('disconnected');
+    if (!error.status) {
+       updateConnectionStatus('disconnected');
+    }
     throw error;
   }
 };
