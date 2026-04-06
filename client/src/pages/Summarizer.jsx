@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaArrowLeft, FaFileAlt, FaCheck, FaExclamationCircle, FaSpinner, FaCopy, FaDownload } from 'react-icons/fa';
 import { postJSON, getConnectionStatus } from '../utils/api';
 
@@ -8,6 +8,21 @@ function Summarizer({ onBack }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setInterval(() => {
+        setCooldown((prev) => prev - 1);
+      }, 1000);
+    } else if (cooldown === 0) {
+      if (error && error.includes('Rate limit exceeded')) {
+        setError('');
+      }
+    }
+    return () => clearInterval(timer);
+  }, [cooldown, error]);
 
   const handleSubmit = async () => {
     if (!text.trim()) {
@@ -29,7 +44,12 @@ function Summarizer({ onBack }) {
       const data = await response.json();
       setResult(data.summary || data.error || 'No summary generated');
     } catch (err) {
-      setError(err.message || 'Failed to summarize text. Make sure the backend server is running.');
+      if (err.status === 429 && err.retryAfterSecs) {
+        setCooldown(err.retryAfterSecs);
+        setError(`Rate limit exceeded. Please wait ${err.retryAfterSecs} seconds before trying again.`);
+      } else {
+        setError(err.message || 'Failed to summarize text. Make sure the backend server is running.');
+      }
     } finally {
       setLoading(false);
     }
@@ -86,11 +106,15 @@ function Summarizer({ onBack }) {
           <button
             className="btn btn-primary"
             onClick={handleSubmit}
-            disabled={loading || !text.trim()}
+            disabled={loading || !text.trim() || cooldown > 0}
           >
             {loading ? (
               <>
                 <FaSpinner style={{ animation: 'spin 1s linear infinite' }} /> Processing
+              </>
+            ) : cooldown > 0 ? (
+              <>
+                <FaSpinner style={{ animation: 'spin 1s linear infinite' }} /> Wait {cooldown}s
               </>
             ) : (
               <>
