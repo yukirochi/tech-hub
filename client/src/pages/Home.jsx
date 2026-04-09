@@ -59,12 +59,12 @@ function Home({ onSelectFeature }) {
   ];
 
   return (
-    <div>
-      <h1 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '12px', color: '#1e293b' }}>
-        Welcome to Tech Hub
+    <div className="home-container">
+      <h1 style={{ fontFamily: 'Merriweather, serif', fontSize: '32px', fontWeight: '700', marginBottom: '12px', color: '#0f172a' }}>
+        Tool Directory
       </h1>
-      <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '40px' }}>
-        Powerful tools to enhance your productivity and content creation
+      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#475569', marginBottom: '40px' }}>
+        Select a utility below to begin processing your documents and texts.
       </p>
       <div className="features-grid">
         {features.map(feature => {
@@ -78,10 +78,12 @@ function Home({ onSelectFeature }) {
               <div className="feature-icon">
                 <IconComponent />
               </div>
-              <div className="feature-title">{feature.title}</div>
-              <div className="feature-description">{feature.description}</div>
-              <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontSize: '12px', fontWeight: '600' }}>
-                Get Started <FaArrowRight style={{ fontSize: '10px' }} />
+              <div className="feature-card-content">
+                <div className="feature-title">{feature.title}</div>
+                <div className="feature-description">{feature.description}</div>
+                <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontSize: '12px', fontWeight: '600' }}>
+                  Get Started <FaArrowRight style={{ fontSize: '10px' }} />
+                </div>
               </div>
             </div>
           );

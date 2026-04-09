@@ -1,4 +1,4 @@
-import { FaRocket, FaShieldAlt, FaBolt, FaUsers } from 'react-icons/fa';
+import { FaBookReader, FaShieldAlt, FaBolt, FaGraduationCap, FaSearch, FaPen, FaFilePdf, FaImage } from 'react-icons/fa';
 import './Landing.css';
 
 function Landing({ onGetStarted }) {
@@ -6,67 +6,51 @@ function Landing({ onGetStarted }) {
     <div className="landing-page">
       <section className="hero-section">
         <div className="hero-content">
+          <h2 className="hero-subtitle">Scholarly Workspace</h2>
           <h1 className="hero-title">
-            Welcome to <span className="gradient-text">Tech Hub</span>
+            Advanced Tools for Academic & Textual Analysis
           </h1>
-          <p className="hero-subtitle">
-            Your all-in-one platform for powerful AI-driven tools
-          </p>
           <p className="hero-description">
-            Transform your workflow with cutting-edge text processing, image manipulation, 
-            and document conversion tools - all in one place.
+            Enhance your research workflow with rigorous text processing, structural analysis, and document conversion tools designed for precision and clarity.
           </p>
           <button className="cta-button" onClick={onGetStarted}>
-            <FaRocket /> Get Started Free
+            <FaBookReader /> Access Tools
           </button>
-        </div>
-        <div className="hero-image">
-          <div className="floating-card card-1">
-            <FaBolt className="card-icon" />
-            <span>Fast Processing</span>
-          </div>
-          <div className="floating-card card-2">
-            <FaShieldAlt className="card-icon" />
-            <span>Secure & Private</span>
-          </div>
-          <div className="floating-card card-3">
-            <FaUsers className="card-icon" />
-            <span>User Friendly</span>
-          </div>
         </div>
       </section>
 
       <section className="features-overview">
-        <h2 className="section-title">What We Offer</h2>
+        <h2 className="section-title">Capabilities Directory</h2>
+        <p className="section-subtitle">A comprehensive suite of utilities for academic workflows.</p>
         <div className="features-grid-landing">
           <div className="feature-item">
-            <div className="feature-number">01</div>
-            <h3>Text Analysis</h3>
-            <p>Summarize, paraphrase, compare texts, and count words with powerful tools</p>
+            <div className="feature-icon-wrapper"><FaSearch /></div>
+            <h3>Textual Analysis</h3>
+            <p>Perform plagiarism checks, semantic summarization, and detailed word metrics for academic papers.</p>
           </div>
           <div className="feature-item">
-            <div className="feature-number">02</div>
-            <h3>Writing Tools</h3>
-            <p>Fix grammar, convert text cases, and improve your writing quality</p>
+            <div className="feature-icon-wrapper"><FaPen /></div>
+            <h3>Writing & Revision</h3>
+            <p>Utilize algorithmic grammar correction and intelligent paraphrasing to refine scholarly writing.</p>
           </div>
           <div className="feature-item">
-            <div className="feature-number">03</div>
-            <h3>Document Conversion</h3>
-            <p>Convert between PDF and Word formats seamlessly</p>
+            <div className="feature-icon-wrapper"><FaFilePdf /></div>
+            <h3>Document Processing</h3>
+            <p>Convert and manage document formats seamlessly, preserving complex formatting and data integrity.</p>
           </div>
           <div className="feature-item">
-            <div className="feature-number">04</div>
-            <h3>Utilities</h3>
-            <p>Generate QR codes and remove image backgrounds easily</p>
+            <div className="feature-icon-wrapper"><FaImage /></div>
+            <h3>Media Utilities</h3>
+            <p>Extract text from images using advanced OCR technology and manage visual assets.</p>
           </div>
         </div>
       </section>
 
       <section className="cta-section">
-        <h2>Ready to boost your productivity?</h2>
-        <p>Join thousands of users who trust Tech Hub for their daily tasks</p>
+        <h2>Initiate Your Workflow</h2>
+        <p>Join researchers and students utilizing Tech Hub for rigorous academic work.</p>
         <button className="cta-button-secondary" onClick={onGetStarted}>
-          Start Using Tools Now
+          Open Dashboard
         </button>
       </section>
     </div>
