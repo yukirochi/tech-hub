@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaHome, FaTools, FaInfoCircle, FaBars, FaTimes, FaChevronDown, FaComments, FaGraduationCap } from 'react-icons/fa';
+import { FaHome, FaTools, FaInfoCircle, FaBars, FaTimes, FaComments, FaGraduationCap, FaBookOpen } from 'react-icons/fa';
 import './App.css';
 import ConnectionStatus from './components/ConnectionStatus';
 import Landing from './pages/Landing';
@@ -86,87 +86,89 @@ function App() {
   return (
     <div className="app">
       {!isAdminPage && (
-        <nav className="navbar">
-          <div className="navbar-left">
-            <div className="navbar-title" onClick={() => handleNavClick('landing')}>
-              <span className="logo-icon">🚀</span> Tech Hub
+        <>
+          {/* Mobile Overlay */}
+          <div 
+            className={`sidebar-overlay ${mobileMenuOpen ? 'mobile-open' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+
+          {/* Sidebar Navigation */}
+          <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+            <div className="sidebar-header">
+              <div className="sidebar-title" onClick={() => handleNavClick('landing')}>
+                <FaBookOpen className="logo-icon" /> Tech Hub
+              </div>
+              <button className="sidebar-close" onClick={() => setMobileMenuOpen(false)}>
+                <FaTimes />
+              </button>
             </div>
-          </div>
-          
-          <button className="hamburger" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
-          
-          <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <li>
-              <button
-                className={currentPage === 'landing' ? 'active' : ''}
-                onClick={() => handleNavClick('landing')}
-              >
-                <FaHome /> Home
-              </button>
-            </li>
-            <li className="dropdown">
-              <button
-                className={currentPage === 'home' || ['remove-bg', 'image-to-text', 'summarizer', 'paraphrase', 'grammar-fix', 'qr-generator', 'pdf-converter', 'plagiarism-checker', 'essay-outline'].includes(currentPage) ? 'active' : ''}
-                onClick={() => {
-                  setToolsDropdownOpen(!toolsDropdownOpen);
-                  if (window.innerWidth > 768) return;
-                  handleNavClick('home');
-                }}
-              >
-                <FaTools /> Academic Tools <FaChevronDown className="dropdown-icon" />
-              </button>
-              <ul className={`dropdown-menu ${toolsDropdownOpen ? 'show' : ''}`}>
-                <li><button onClick={() => handleNavClick('home')}>All Tools</button></li>
-                <li><button onClick={() => handleNavClick('summarizer')}>Summarizer</button></li>
-                <li><button onClick={() => handleNavClick('paraphrase')}>Paraphrase</button></li>
-                <li><button onClick={() => handleNavClick('grammar-fix')}>Grammar Fix</button></li>
-                <li><button onClick={() => handleNavClick('plagiarism-checker')}>Plagiarism Checker</button></li>
-                <li><button onClick={() => handleNavClick('essay-outline')}>Essay Outline</button></li>
-                <li><button onClick={() => handleNavClick('image-to-text')}>Image to Text</button></li>
-                <li><button onClick={() => handleNavClick('pdf-converter')}>PDF Converter</button></li>
-                <li><button onClick={() => handleNavClick('qr-generator')}>QR Generator</button></li>
-                <li><button onClick={() => handleNavClick('remove-bg')}>Remove Background</button></li>
-              </ul>
-            </li>
-            <li>
-              <button
-                className={currentPage === 'courses' ? 'active' : ''}
-                onClick={() => handleNavClick('courses')}
-              >
-                <FaGraduationCap /> Courses
-              </button>
-            </li>
-            <li>
-              <button
-                className={currentPage === 'about' ? 'active' : ''}
-                onClick={() => handleNavClick('about')}
-              >
-                <FaInfoCircle /> About Us
-              </button>
-            </li>
-            <li>
-              <button
-                className={currentPage === 'feedback' ? 'active' : ''}
-                onClick={() => handleNavClick('feedback')}
-              >
-                <FaComments /> Feedback
-              </button>
-            </li>
-          </ul>
-          
-          <div className="navbar-right">
-            <ConnectionStatus />
-          </div>
-        </nav>
+            
+            <div className="sidebar-nav">
+              <div className="nav-section-title">Main Menu</div>
+              <div className="nav-links">
+                <button className={currentPage === 'landing' ? 'active' : ''} onClick={() => handleNavClick('landing')}>
+                  <FaHome /> Home
+                </button>
+                <button className={currentPage === 'home' || ['remove-bg', 'image-to-text', 'summarizer', 'paraphrase', 'grammar-fix', 'qr-generator', 'pdf-converter', 'plagiarism-checker', 'essay-outline'].includes(currentPage) ? 'active' : ''} onClick={() => handleNavClick('home')}>
+                  <FaTools /> Academic Tools
+                </button>
+                <button className={currentPage === 'courses' ? 'active' : ''} onClick={() => handleNavClick('courses')}>
+                  <FaGraduationCap /> Courses
+                </button>
+                <button className={currentPage === 'about' ? 'active' : ''} onClick={() => handleNavClick('about')}>
+                  <FaInfoCircle /> About Us
+                </button>
+                <button className={currentPage === 'feedback' ? 'active' : ''} onClick={() => handleNavClick('feedback')}>
+                  <FaComments /> Feedback
+                </button>
+              </div>
+            </div>
+            
+            <div className="sidebar-footer">
+              <ConnectionStatus />
+            </div>
+          </aside>
+        </>
       )}
       
-      <div className="container">
-        {renderPage()}
-      </div>
-      
-      {!isAdminPage && <Footer />}
+      <main className={!isAdminPage ? 'main-content' : ''}>
+        {!isAdminPage && (
+          <div className="mobile-topbar">
+            <div className="mobile-title" onClick={() => handleNavClick('landing')}>
+              <FaBookOpen style={{color: '#16a34a'}}/> Tech Hub
+            </div>
+            {/* The hamburger is generally removed below 640px, but kept for 640px-768px tablet sizes if needed in CSS */}
+            <button className="hamburger" onClick={() => setMobileMenuOpen(true)}>
+              <FaBars />
+            </button>
+          </div>
+        )}
+        
+        <div className="container">
+          {renderPage()}
+        </div>
+        
+        {!isAdminPage && <Footer />}
+        
+        {/* Mobile Bottom Navigation (<640px) */}
+        {!isAdminPage && (
+          <nav className="bottom-nav">
+            <button className={currentPage === 'landing' ? 'active' : ''} onClick={() => handleNavClick('landing')}>
+              <FaHome /> <span>Home</span>
+            </button>
+            <button className={currentPage === 'home' || ['remove-bg', 'image-to-text', 'summarizer', 'paraphrase', 'grammar-fix', 'qr-generator', 'pdf-converter', 'plagiarism-checker', 'essay-outline'].includes(currentPage) ? 'active' : ''} onClick={() => handleNavClick('home')}>
+              <FaTools /> <span>Tools</span>
+            </button>
+            <button className={currentPage === 'courses' ? 'active' : ''} onClick={() => handleNavClick('courses')}>
+              <FaGraduationCap /> <span>Courses</span>
+            </button>
+            <button className={currentPage === 'about' ? 'active' : ''} onClick={() => handleNavClick('about')}>
+              <FaInfoCircle /> <span>About</span>
+            </button>
+          </nav>
+        )}
+      </main>
     </div>
   );
 }
