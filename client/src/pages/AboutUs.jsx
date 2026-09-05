@@ -35,6 +35,17 @@ function AboutUs({ onBack }) {
       linkedin: 'https://linkedin.com',
       twitter: 'https://twitter.com',
       bio: 'if there a hole there is a way'
+    },
+    {
+      name: 'mary hyacinth sarmiento',
+      role: 'Computer Engineering Student',
+      image: 'https://plus.unsplash.com/premium_photo-1689551670902-19b441a6afde?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      quote: 'Anong favorite song mo sa spotibai',
+      email: 'hyathhotel123@gmail.com',
+      github: 'https://github.com',
+      linkedin: 'https://linkedin.com',
+      twitter: 'https://twitter.com',
+      bio: 'Whenever i see girls and boys and girls and boys see me'
     }
   ];
 
